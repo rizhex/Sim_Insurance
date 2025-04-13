@@ -23,7 +23,7 @@ unidad de tiempo.
 
 \subsection*{Objetivos}
 Dada una condición inicial de $n_0$ clientes y un capital inicial $a_0 \geq 0$, se busca estimar que a probabilidad de que el 
-capital de la compañía nunca sea negativo en el intervalo de tiempo $[0, t]$."
+capital de la compañía nunca sea negativo en el intervalo de tiempo $[0, T]$.
 
 \subsection*{Variables que describen el problema}
 
@@ -47,7 +47,7 @@ La lista de eventos consiste en un único valor: el tiempo en el que ocurrirá e
 Notación: $EL = t_E$
 Si el estado actual es $(n,a)$ en tiempo $t$, el próximo evento ocurirrá en $t + X$, donde $X$ es una variable
 aleatoria exponencial con tasa:
-Tasa Total $$ = v + n\mu + n\lambda$$
+$$ \text{Tasa Total}= v + n\mu + n\lambda$$
 Aún así, no importa cuando ocurra el próximo evento, este ocurrirá con una probabilidad:
 \begin{itemize}
     \item Nuevo asegurado: $\frac{v}{v+n\mu+n\lambda}$
