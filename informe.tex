@@ -1,0 +1,189 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\title{Nombre del Proyecto}
+\author{Autor(es)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción} \label{S1}
+\subsection*{Contexto}
+En el proyecto se modela una compañía de seguros de daños donde los titulares de póliza o asegurados realizan reclamaciones
+de acuerdo a procesos de Poisson independientes con una tasa en comun $\lambda$ y el costo de cada reclamación tiene distribución
+$F$. Nuevos clientes se unen a la compañia acorde a un proceso de Poisson con un ratio $v$. Cada cliente permanece en la compañía
+por un tiempo exponencial con tasa $\mu$ antes de darse de baja. Cada asegurado paga a la compañía de seguros una cantidad $c$ por 
+unidad de tiempo. 
+
+\subsection*{Objetivos}
+Dada una condición inicial de $n_0$ clientes y un capital inicial $a_0 \geq 0$, se busca estimar que a probabilidad de que el 
+capital de la compañía nunca sea negativo en el intervalo de tiempo $[0, t]$."
+
+\subsection*{Variables que describen el problema}
+
+Para simular el sistema anterior, definimos las variables y eventos de la siguiente manera:
+\\
+Variables: 
+\begin{itemize}
+    \item Variable de tiempo: $t$.
+    \item Variable de estado del sistema $(n,a)$, donde $n$ es el numero de asegurados y $a$ es el capital actual de la compañía.
+    \item Tasa de llegada de nuevos clientes: $v$
+    \item Tasa de abandono por cliente: $\mu$
+    \item Tasa de reclamaciones por clientes: $\lambda$
+\end{itemize}
+Eventos:
+\begin{itemize}
+    \item LLegada de un nuevo asegurado(titulares)
+    \item Pérdida de un asegurado
+    \item Reclamación de un asegurado
+\end{itemize}
+La lista de eventos consiste en un único valor: el tiempo en el que ocurrirá el próximo evento.\\
+Notación: $EL = t_E$
+Si el estado actual es $(n,a)$ en tiempo $t$, el próximo evento ocurirrá en $t + X$, donde $X$ es una variable
+aleatoria exponencial con tasa:
+Tasa Total $$ = v + n\mu + n\lambda$$
+Aún así, no importa cuando ocurra el próximo evento, este ocurrirá con una probabilidad:
+\begin{itemize}
+    \item Nuevo asegurado: $\frac{v}{v+n\mu+n\lambda}$
+    \item Pérdida de asegurado: $\frac{n\mu}{v+n\mu+n\lambda}$
+    \item Reclamación: $\frac{n\lambda}{v+n\mu+n\lambda}$
+\end{itemize}
+Tras determinar cuándo ocurre el proximo evento se genera un número aleatorio para identificar
+cuál de los tres eventos ocurrió. Luego se actualiza el estado del sistema $(n,a)$ en función del evento seleccionado.
+
+Para un estado $(n,a)$:
+\begin{itemize}
+    \item $X$: Variable aleatorio exponencial con tasa $v+n\mu+n\lambda$(tiempo hasta el próximo evento).
+    \item $J$: Variable aleatoria que representa el tipo de evento.
+        \begin{equation}
+            J = 
+            \begin{cases}
+                1 & \text{Nuevo asegurado}, \quad \text{con probabilidad } \dfrac{\nu}{\nu + n\mu + n\lambda}, \\
+                2 & \text{Pérdida de asegurado}, \quad \text{con probabilidad } \dfrac{n\mu}{\nu + n\mu + n\lambda}, \\
+                3 & \text{Reclamación}, \quad \text{con probabilidad } \dfrac{n\lambda}{\nu + n\mu + n\lambda}
+            \end{cases}
+        \end{equation}
+    \item $Y$: Variable aleatoria con distribución $F$(costo de la reclamación)
+    \item $I$: Indicador del éxito financiero:
+        \begin{equation}
+            I =
+            \begin{cases}
+                1 & \text{, si el capital es no negativo}, \\
+                2 & \text{, en caso contrario}
+            \end{cases}
+        \end{equation}
+\end{itemize}
+
+\section{Detalles de Implementación} \label{S2}
+
+\subsection*{Inicialización}
+Para simular el sistema, inicializamos las variables de la siguiente manera:
+
+\begin{enumerate}
+    \item \textbf{Inicialización inicial}:
+    \begin{align*}
+        t &= 0, \\
+        a &= a_0, \\
+        n &= n_0
+    \end{align*}
+    
+    \item Generar $X \sim \text{Exponencial}(\nu + n\mu + n\lambda)$ e inicializar:
+    \begin{align*}
+        t_E &= X
+    \end{align*}
+\end{enumerate}
+
+\subsection*{Actualización}
+Para actualizar el sistema, avanzamos al siguiente evento, verificando primero si nos lleva más allá del tiempo $T$:
+
+\begin{enumerate}
+    \item \textbf{Caso 1}: Si $t_E > T$:
+    \begin{itemize}
+        \item Asignar $I = 1$ y finalizar esta ejecución.
+    \end{itemize}
+    
+    \item \textbf{Caso 2}: Si $t_E \leq T$:
+    \begin{enumerate}
+        \item Reiniciar:
+        \begin{align*}
+            a &= a + n \cdot c \cdot (t_E - t)  \\
+            t &= t_E \quad 
+        \end{align*}
+        
+        \item Generar $J$:
+        \begin{align*}
+            J &= 
+            \begin{cases}
+                1: & n = n + 1 \\
+                2: & n = n - 1  \\
+                3: & 
+                \begin{aligned}
+                    &\text{Generar } Y \sim F. \\
+                    &\text{Si } Y > a \text{, asignar } I = 0 \text{ y terminar.} \\
+                    &\text{En otro caso, } a = a - Y \quad \text{(Pagar reclamación)}
+                \end{aligned}
+            \end{cases}
+        \end{align*}
+        
+        \item Generar $X \sim \text{Exponencial}(\nu + n\mu + n\lambda)$ y actualizar:
+        \begin{align*}
+            t_E &= t + X
+        \end{align*}
+    \end{enumerate}
+\end{enumerate}
+
+El paso de actualización se repite continuamente hasta que se completa una ejecución.
+
+\section{Resultados y Experimentos} \label{S3}
+\subsection*{Hallazgos de la simulación}
+Resultados principales obtenidos.
+
+\subsection*{Interpretación de los resultados}
+Análisis de lo que significan los resultados.
+
+\subsection*{Hipótesis extraídas}
+\begin{itemize}
+    \item Hipótesis 1
+    \item Hipótesis 2
+\end{itemize}
+
+\subsection*{Experimentos de validación}
+Descripción de los experimentos realizados para validar las hipótesis.
+
+\subsection*{Análisis estadístico}
+\begin{itemize}
+    \item Variables de interés
+    \item Métodos estadísticos utilizados
+\end{itemize}
+
+\subsection*{Análisis de parada}
+Criterios utilizados para determinar cuándo detener la simulación.
+
+\section{Modelo Matemático} \label{S4}
+\subsection*{Descripción del modelo}
+Formulación matemática del modelo, incluyendo modelos probabilísticos si aplica.
+
+\subsection*{Supuestos y restricciones}
+\begin{itemize}
+    \item Supuesto 1
+    \item Supuesto 2
+    \item Restricción 1
+\end{itemize}
+
+\subsection*{Comparación con resultados experimentales}
+Análisis de cómo los resultados del modelo se comparan con los experimentales.
+
+\section{Conclusiones} \label{S5}
+\begin{itemize}
+    \item Conclusión principal
+    \item Logros alcanzados
+    \item Posibles extensiones o trabajo futuro
+\end{itemize}
+
+\end{document}
