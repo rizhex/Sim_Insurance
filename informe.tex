@@ -5,8 +5,8 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 
-\title{Nombre del Proyecto}
-\author{Autor(es)}
+\title{Simulación de compañía de seguros}
+\author{Orlando R. de la Torre Leal}
 \date{\today}
 
 \begin{document}
@@ -75,7 +75,7 @@ Para un estado $(n,a)$:
             I =
             \begin{cases}
                 1 & \text{, si el capital es no negativo}, \\
-                2 & \text{, en caso contrario}
+                0 & \text{, en caso contrario}
             \end{cases}
         \end{equation}
 \end{itemize}
@@ -93,7 +93,7 @@ Para simular el sistema, inicializamos las variables de la siguiente manera:
         n &= n_0
     \end{align*}
     
-    \item Generar $X \sim \text{Exponencial}(\nu + n\mu + n\lambda)$ e inicializar:
+    \item Generar $X \sim \text{Exponencial}(\nu + n\mu + n\lambda)$(tiempo de espera hasta la siguiente evaluación) e inicializar:
     \begin{align*}
         t_E &= X
     \end{align*}
@@ -112,7 +112,7 @@ Para actualizar el sistema, avanzamos al siguiente evento, verificando primero s
     \begin{enumerate}
         \item Reiniciar:
         \begin{align*}
-            a &= a + n \cdot c \cdot (t_E - t)  \\
+            a &= a + n \cdot c \cdot (t_E)  \\
             t &= t_E \quad 
         \end{align*}
         
