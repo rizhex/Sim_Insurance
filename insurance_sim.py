@@ -106,13 +106,13 @@ class InsuranceSim:
         plt.show()
 
 example_params = {
-    'v' : 0.9,     # tasa de nuevos clientes 
-    'mu': 0.1,     # tasa de abandono de clientes
-    'lam': 0.1,   # tasa de reclamaciones por cliente
-    'c': 10,       # pago de cliente por unidad de tiempo
-    'a0': 50,        # capital inicial
+    'v' : 0.6,     # tasa de nuevos clientes 
+    'mu': 0.3,     # tasa de abandono de clientes
+    'lam': 0.6,   # tasa de reclamaciones por cliente
+    'c': 2.5,       # pago de cliente por unidad de tiempo
+    'a0': 10,        # capital inicial
     'n0': 5,         # cantidad inicial de clientes
-    'T': 1000,       # tiempo maximo 
+    'T': 100,       # tiempo maximo 
     'F': {   # distribucion de reclamaciones
         'mean': 0.5,
         'sigma': 0.8
@@ -139,4 +139,4 @@ if __name__ == "__main__":
     print(f"Tiempo promedio: {results['average_time']:.2f} unidades de tiempo")
     
     # visualizar algunas trayectorias
-    #insurance_sim.visualize(results['records'])
+    insurance_sim.visualize(results['records'])

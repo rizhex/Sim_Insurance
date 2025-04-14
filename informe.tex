@@ -13,7 +13,7 @@
 
 \maketitle
 
-\section{Introducción} \label{S1}
+\section{Introducción} 
 \subsection*{Contexto}
 En el proyecto se modela una compañía de seguros de daños donde los titulares de póliza o asegurados realizan reclamaciones
 de acuerdo a procesos de Poisson independientes con una tasa en comun $\lambda$ y el costo de cada reclamación tiene distribución
@@ -80,7 +80,7 @@ Para un estado $(n,a)$:
         \end{equation}
 \end{itemize}
 
-\section{Detalles de Implementación} \label{S2}
+\section{Detalles de Implementación} 
 
 \subsection*{Inicialización}
 Para simular el sistema, inicializamos las variables de la siguiente manera:
@@ -140,21 +140,37 @@ Para actualizar el sistema, avanzamos al siguiente evento, verificando primero s
 
 El paso de actualización se repite continuamente hasta que se completa una ejecución.
 
-\section{Resultados y Experimentos} \label{S3}
+\section{Resultados y Experimentos} 
 \subsection*{Hallazgos de la simulación}
-Resultados principales obtenidos.
-
+Para los siguientes valores iniciales:
+\begin{itemize}
+   \item $v=0.6$ Tasa de nuevos clientes
+   \item $\mu=0.3$ Tasa de abandono de clientes
+   \item $\lambda = 0.2$ Tasa de reclamaciones de clientes
+   \item $c=2.5$ Pago de clientes por unidad de tiempo
+   \item $a_0=10$ Capital Inicial
+   \item $n_0=5$ Cantidad Inicial de clientes
+   \item $T=500$ Tiempo máximo
+\end{itemize}
+Durante 1000 simulaciones hemos obtenido los siguientes resultados:
+\begin{itemize}
+    \item Probabilidad de no arruinarse: 0.743\%
+    \item Tiempo promedio hasta arruinarse: 75.59 unidades de tiempo
+\end{itemize}
 \subsection*{Interpretación de los resultados}
-Análisis de lo que significan los resultados.
-
+El costo actual (c = 2.5) es suficiente para evitar la ruina en al menos el 74.3\% de los casos.
+Las reclamaciones grandes (> $a_0$) son la principal causa de ruina temprana (antes de T/2).
 \subsection*{Hipótesis extraídas}
 \begin{itemize}
-    \item Hipótesis 1
-    \item Hipótesis 2
+    \item El aumento del costo por cliente aumenta la probabilidad de éxito pero no es rentable.
+    \item El aumento de la frecuencia de reclamaciones disminuye la probabilidad de exito drámaticamente.
 \end{itemize}
 
 \subsection*{Experimentos de validación}
-Descripción de los experimentos realizados para validar las hipótesis.
+\begin{itemize}
+    \item Para la Hipótesis 1 se aumento el costo de 2.5 a 3.0(20\%) y se obtuvo un aumento en la probabilidad de exito de 74.3\% a 77.87\% un mero 3\%, no es rentable. Podría aumentar el descontento ocasionando mas reclamaciones.
+    \item Para la Hipótesis 2 se aumento el ratio de reclamaciones($\lambda = 0.2$ -> $\lambda = 0.6$) y disminuyó la probabilidad de éxito hasta un 38.4\% con tiempo estimado de ruina de 41.72u de tiempo
+\end{itemize}
 
 \subsection*{Análisis estadístico}
 \begin{itemize}
@@ -163,27 +179,10 @@ Descripción de los experimentos realizados para validar las hipótesis.
 \end{itemize}
 
 \subsection*{Análisis de parada}
-Criterios utilizados para determinar cuándo detener la simulación.
+Si se llega al valor de ruina $a=0$ se puede detener la simulación. 
 
-\section{Modelo Matemático} \label{S4}
-\subsection*{Descripción del modelo}
-Formulación matemática del modelo, incluyendo modelos probabilísticos si aplica.
-
-\subsection*{Supuestos y restricciones}
-\begin{itemize}
-    \item Supuesto 1
-    \item Supuesto 2
-    \item Restricción 1
-\end{itemize}
-
-\subsection*{Comparación con resultados experimentales}
-Análisis de cómo los resultados del modelo se comparan con los experimentales.
-
-\section{Conclusiones} \label{S5}
-\begin{itemize}
-    \item Conclusión principal
-    \item Logros alcanzados
-    \item Posibles extensiones o trabajo futuro
-\end{itemize}
+\section{Conclusiones} 
+Para maximizar el éxito de una compañía de seguros es importante controlar que la tasa de ingreso de clientes sea mayor que la de retirada($\mu > \lambda$). Y en base a la cantidad de clientes
+hay un límite de hasta donde aumentar el precio es rentable para maximizar las ganancias y minimizando las reclamaciones. 
 
 \end{document}
