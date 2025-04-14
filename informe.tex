@@ -152,6 +152,12 @@ Para los siguientes valores iniciales:
    \item $n_0=5$ Cantidad Inicial de clientes
    \item $T=500$ Tiempo máximo
 \end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figure_1.png}
+
+    \label{fig:1}
+\end{figure}
 Durante 1000 simulaciones hemos obtenido los siguientes resultados:
 \begin{itemize}
     \item Probabilidad de no arruinarse: 0.743\%
@@ -169,17 +175,23 @@ Las reclamaciones grandes (> $a_0$) son la principal causa de ruina temprana (an
 \subsection*{Experimentos de validación}
 \begin{itemize}
     \item Para la Hipótesis 1 se aumento el costo de 2.5 a 3.0(20\%) y se obtuvo un aumento en la probabilidad de exito de 74.3\% a 77.87\% un mero 3\%, no es rentable. Podría aumentar el descontento ocasionando mas reclamaciones.
-    \item Para la Hipótesis 2 se aumento el ratio de reclamaciones($\lambda = 0.2$ -> $\lambda = 0.6$) y disminuyó la probabilidad de éxito hasta un 38.4\% con tiempo estimado de ruina de 41.72u de tiempo
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Figure_2.png}
+    
+        \label{fig:2}
+    \end{figure}
+    \item Para la Hipótesis 2 se aumento el ratio de reclamaciones($\lambda = 0.2$ a $\lambda = 0.6$) y disminuyó la probabilidad de éxito hasta un 38.4\% con tiempo estimado de ruina de 41.72u de tiempo
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Figure_3.png}
+    
+        \label{fig:3}
+    \end{figure}
 \end{itemize}
-
-\subsection*{Análisis estadístico}
-\begin{itemize}
-    \item Variables de interés
-    \item Métodos estadísticos utilizados
-\end{itemize}
-
+\newpage
 \subsection*{Análisis de parada}
-Si se llega al valor de ruina $a=0$ se puede detener la simulación. 
+Si se llega al valor de ruina $a\leq0$ se puede detener la simulación o si se alcanza el final. 
 
 \section{Conclusiones} 
 Para maximizar el éxito de una compañía de seguros es importante controlar que la tasa de ingreso de clientes sea mayor que la de retirada($\mu > \lambda$). Y en base a la cantidad de clientes
